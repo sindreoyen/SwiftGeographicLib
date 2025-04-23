@@ -30,7 +30,7 @@ struct GeneralDirectTests {
         let start = (lat: 0.0, lon: 0.0)
         let s12 = 1000.0
         let azi1 = 90.0
-        let flags: UInt32 = 1 << 0 // GEOD_ARCMODE
+        let flags: GeodesicFlags = .arcMode
         // In arc-mode s12_a12 is degrees of arc
         let arcDegrees = s12 / 6378137.0 * (180.0 / .pi)
         let (_, _, _, _, _, _, _, _, a12) =

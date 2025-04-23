@@ -32,7 +32,7 @@ struct GeneralInverseTests {
         // now get the ellipsoidal arc length
         let (a12, _, _, _, _, _, _, _) = Geodesic.generalInverse(between: p1, and: p2)
         // expected arc degrees on the ellipsoid:
-        let expectedArc = s12 / GeodGeoDesic.WGS84.semiMajorAxis * (180.0 / .pi)
+        let expectedArc = s12 / GeodGeodesic.WGS84.semiMajorAxis * (180.0 / .pi)
         #expect(abs(a12 - expectedArc) <= 0.006)
     }
 }

@@ -11,7 +11,7 @@ import CoreLocation
 /// Swift wrappers for the C geodesic routines from GeographicLib.
 /// Provides methods to solve direct and inverse geodesic problems using a specified geodesic model (e.g., WGS84).
 public enum Geodesic {
-
+    
     /// Solves the direct geodesic problem.
     ///
     /// Calculates the destination point given a starting point, distance, and azimuth.
@@ -26,7 +26,7 @@ public enum Geodesic {
         from coordinate: (lat: CLLocationDegrees, lon: CLLocationDegrees),
         distance s12: Double,
         azimuth azi1: Double,
-        geodesic model: GeodGeoDesic = .WGS84
+        geodesic model: GeodGeodesic = .WGS84
     ) -> CLLocationCoordinate2D {
         var g = geod_geodesic()
         geod_init(&g, model.semiMajorAxis, model.flattening)
@@ -41,7 +41,7 @@ public enum Geodesic {
                     &azi2)
         return CLLocationCoordinate2D(latitude: lat2, longitude: lon2)
     }
-
+    
     /// Solves the general direct geodesic problem with extended output.
     ///
     /// Allows for calculating additional geodesic quantities along with the destination point.
@@ -57,9 +57,9 @@ public enum Geodesic {
     public static func generalDirect(
         from coordinate: (lat: CLLocationDegrees, lon: CLLocationDegrees),
         azimuth azi1: Double,
-        flags: UInt32 = 0,
+        flags: GeodesicFlags = .none,
         s12_a12: Double,
-        geodesic model: GeodGeoDesic = .WGS84
+        geodesic model: GeodGeodesic = .WGS84
     ) -> (
         lat2: Double,
         lon2: Double,
@@ -76,22 +76,22 @@ public enum Geodesic {
         var lat2 = 0.0, lon2 = 0.0, azi2 = 0.0
         var s12 = 0.0, m12 = 0.0, M12 = 0.0, M21 = 0.0, S12 = 0.0
         let a12 = geod_gendirect(&g,
-                                  coordinate.lat,
-                                  coordinate.lon,
-                                  azi1,
-                                  flags,
-                                  s12_a12,
-                                  &lat2,
-                                  &lon2,
-                                  &azi2,
-                                  &s12,
-                                  &m12,
-                                  &M12,
-                                  &M21,
-                                  &S12)
+                                 coordinate.lat,
+                                 coordinate.lon,
+                                 azi1,
+                                 flags.rawValue,
+                                 s12_a12,
+                                 &lat2,
+                                 &lon2,
+                                 &azi2,
+                                 &s12,
+                                 &m12,
+                                 &M12,
+                                 &M21,
+                                 &S12)
         return (lat2, lon2, azi2, s12, m12, M12, M21, S12, a12)
     }
-
+    
     /// Solves the inverse geodesic problem.
     ///
     /// Calculates the shortest distance and azimuths between two geographic points.
@@ -104,7 +104,7 @@ public enum Geodesic {
     public static func inverse(
         between point1: (lat: CLLocationDegrees, lon: CLLocationDegrees),
         and point2: (lat: CLLocationDegrees, lon: CLLocationDegrees),
-        geodesic model: GeodGeoDesic = .WGS84
+        geodesic model: GeodGeodesic = .WGS84
     ) -> (s12: Double, azi1: Double, azi2: Double) {
         var g = geod_geodesic()
         geod_init(&g, model.semiMajorAxis, model.flattening)
@@ -119,7 +119,7 @@ public enum Geodesic {
                      &azi2)
         return (s12, azi1, azi2)
     }
-
+    
     /// Solves the general inverse geodesic problem with extended output.
     ///
     /// Includes computation of distance, azimuths, geodesic scales, and area between two points.
@@ -133,7 +133,7 @@ public enum Geodesic {
     public static func generalInverse(
         between point1: (lat: CLLocationDegrees, lon: CLLocationDegrees),
         and point2: (lat: CLLocationDegrees, lon: CLLocationDegrees),
-        geodesic model: GeodGeoDesic = .WGS84
+        geodesic model: GeodGeodesic = .WGS84
     ) -> (
         a12: Double,
         s12: Double,
@@ -149,17 +149,17 @@ public enum Geodesic {
         var s12 = 0.0, azi1 = 0.0, azi2 = 0.0
         var m12 = 0.0, M12 = 0.0, M21 = 0.0, S12 = 0.0
         let a12 = geod_geninverse(&g,
-                                   point1.lat,
-                                   point1.lon,
-                                   point2.lat,
-                                   point2.lon,
-                                   &s12,
-                                   &azi1,
-                                   &azi2,
-                                   &m12,
-                                   &M12,
-                                   &M21,
-                                   &S12)
+                                  point1.lat,
+                                  point1.lon,
+                                  point2.lat,
+                                  point2.lon,
+                                  &s12,
+                                  &azi1,
+                                  &azi2,
+                                  &m12,
+                                  &M12,
+                                  &M21,
+                                  &S12)
         return (a12, s12, azi1, azi2, m12, M12, M21, S12)
     }
 }

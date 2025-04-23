@@ -29,12 +29,12 @@ public class GeodesicLine {
     public init(
         from coordinate: (lat: CLLocationDegrees, lon: CLLocationDegrees),
         azimuth azi1: Double,
-        caps: UInt32,
-        geodesic model: GeodGeoDesic = .WGS84
+        caps: GeodesicMask,
+        geodesic model: GeodGeodesic = .WGS84
     ) {
         var g = geod_geodesic()
         geod_init(&g, model.semiMajorAxis, model.flattening)
-        geod_lineinit(&line, &g, coordinate.lat, coordinate.lon, azi1, caps)
+        geod_lineinit(&line, &g, coordinate.lat, coordinate.lon, azi1, caps.rawValue)
     }
 
     /// Initializes a geodesic line by directly solving the direct problem.
@@ -51,13 +51,13 @@ public class GeodesicLine {
         directFrom coordinate: (lat: CLLocationDegrees, lon: CLLocationDegrees),
         azimuth azi1: Double,
         distance s12: Double,
-        caps: UInt32,
-        geodesic model: GeodGeoDesic = .WGS84
+        caps: GeodesicMask,
+        geodesic model: GeodGeodesic = .WGS84
     ) {
         self.init(from: coordinate, azimuth: azi1, caps: caps, geodesic: model)
         var g = geod_geodesic()
         geod_init(&g, model.semiMajorAxis, model.flattening)
-        geod_directline(&line, &g, coordinate.lat, coordinate.lon, azi1, s12, caps)
+        geod_directline(&line, &g, coordinate.lat, coordinate.lon, azi1, s12, caps.rawValue)
     }
 
     /// Computes the position at a given distance along the line.
@@ -85,7 +85,7 @@ public class GeodesicLine {
     ///   - `a12`: Arc length from start to destination (degrees).
     @discardableResult
     public func genPosition(
-        flags: UInt32,
+        flags: GeodesicFlags,
         s12_a12: Double
     ) -> (
         lat2: Double,
@@ -101,7 +101,7 @@ public class GeodesicLine {
         var lat2 = 0.0, lon2 = 0.0, azi2 = 0.0
         var s12 = 0.0, m12 = 0.0, M12 = 0.0, M21 = 0.0, S12 = 0.0
         let a12 = geod_genposition(&line,
-                                    flags,
+                                   flags.rawValue,
                                     s12_a12,
                                     &lat2,
                                     &lon2,
@@ -126,7 +126,7 @@ public class GeodesicLine {
     /// - Parameters:
     ///   - flags: Either `GEOD_NOFLAGS` or `GEOD_ARCMODE` to select distance vs. arc mode.
     ///   - s13_a13: Distance (meters) or arc length (degrees) for the reference point.
-    public func genSetDistance(flags: UInt32, s13_a13: Double) {
-        geod_gensetdistance(&line, flags, s13_a13)
+    public func genSetDistance(flags: GeodesicFlags, s13_a13: Double) {
+        geod_gensetdistance(&line, flags.rawValue, s13_a13)
     }
 }

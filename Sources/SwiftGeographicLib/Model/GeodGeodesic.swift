@@ -8,11 +8,11 @@
 /// A structure representing a geodesic.
 /// This structure is used to define the parameters of a geodesic calculation.
 /// It contains the semi-major axis (a) and flattening (f) of the ellipsoid.
-public struct GeodGeoDesic: Sendable {
+public struct GeodGeodesic: Sendable {
     // MARK: - Attributes
     
     // MARK: Known ellipsoids
-    public static let WGS84 = GeodGeoDesic(a: 6_378_137.0, f: 1.0 / 298.257223563)
+    public static let WGS84 = GeodGeodesic(a: 6_378_137.0, f: 1.0 / 298.257223563)
     
     // MARK: Struct attributes
     let semiMajorAxis: Double

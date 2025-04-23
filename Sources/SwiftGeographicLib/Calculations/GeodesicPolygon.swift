@@ -35,7 +35,7 @@ public class GeodesicPolygon {
     ///   - model: The ellipsoidal model to use (defaults to WGS-84).
     public func addPoint(
         _ coordinate: (lat: CLLocationDegrees, lon: CLLocationDegrees),
-        model: GeodGeoDesic = .WGS84
+        model: GeodGeodesic = .WGS84
     ) {
         var g = geod_geodesic()
         geod_init(&g, model.semiMajorAxis, model.flattening)
@@ -51,7 +51,7 @@ public class GeodesicPolygon {
     public func addEdge(
         azimuth azi: Double,
         distance s: Double,
-        model: GeodGeoDesic = .WGS84
+        model: GeodGeodesic = .WGS84
     ) {
         var g = geod_geodesic()
         geod_init(&g, model.semiMajorAxis, model.flattening)
@@ -73,7 +73,7 @@ public class GeodesicPolygon {
         signed: Bool = true
     ) -> (n: UInt32, area: Double, perimeter: Double) {
         var g = geod_geodesic()
-        geod_init(&g, GeodGeoDesic.WGS84.semiMajorAxis, GeodGeoDesic.WGS84.flattening)
+        geod_init(&g, GeodGeodesic.WGS84.semiMajorAxis, GeodGeodesic.WGS84.flattening)
         var A = 0.0, P = 0.0
         let n = geod_polygon_compute(&g, &poly, reverse ? 1 : 0, signed ? 1 : 0, &A, &P)
         return (n, A, P)
@@ -93,7 +93,7 @@ public class GeodesicPolygon {
         signed: Bool = true
     ) -> (n: UInt32, area: Double, perimeter: Double) {
         var g = geod_geodesic()
-        geod_init(&g, GeodGeoDesic.WGS84.semiMajorAxis, GeodGeoDesic.WGS84.flattening)
+        geod_init(&g, GeodGeodesic.WGS84.semiMajorAxis, GeodGeodesic.WGS84.flattening)
         var A = 0.0, P = 0.0
         let n = geod_polygon_testpoint(&g, &poly, coordinate.lat, coordinate.lon, reverse ? 1 : 0, signed ? 1 : 0, &A, &P)
         return (n, A, P)
@@ -115,7 +115,7 @@ public class GeodesicPolygon {
         signed: Bool = true
     ) -> (n: UInt32, area: Double, perimeter: Double) {
         var g = geod_geodesic()
-        geod_init(&g, GeodGeoDesic.WGS84.semiMajorAxis, GeodGeoDesic.WGS84.flattening)
+        geod_init(&g, GeodGeodesic.WGS84.semiMajorAxis, GeodGeodesic.WGS84.flattening)
         var A = 0.0, P = 0.0
         let n = geod_polygon_testedge(&g, &poly, azi, s, reverse ? 1 : 0, signed ? 1 : 0, &A, &P)
         return (n, A, P)
@@ -129,7 +129,7 @@ public class GeodesicPolygon {
     /// - Returns: A tuple `(area, perimeter)` in (m², m).
     public static func area(
         of coordinates: [(lat: Double, lon: Double)],
-        model: GeodGeoDesic = .WGS84
+        model: GeodGeodesic = .WGS84
     ) -> (area: Double, perimeter: Double) {
         var g = geod_geodesic()
         geod_init(&g, model.semiMajorAxis, model.flattening)
