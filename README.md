@@ -225,4 +225,4 @@ let (area, perimeter) = GeodesicPolygon.area(of: coords)
 > **Tip:** All routines default to WGS-84 unless you pass a custom `GeodGeoDesic` model when calling.
  
 # 3 Contributing
-If you notice any bugs or would like to add support for new features, please submit a pull request. You can also submit an issue, and I will look into it when I can. All contributions are welcome! Note: All implemented methods should be placed in relevant folder locations and tested with the newest testing framework, `Swift Testing`.
+If you encounter any bugs or want to suggest new features, please submit a pull request. You can also report any issues, and I will address them when I have the opportunity. All contributions are welcome! Please note that all implemented methods should be organized in the appropriate folder locations and tested using the latest testing framework, `Swift Testing`.
