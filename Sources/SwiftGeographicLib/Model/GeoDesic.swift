@@ -22,7 +22,7 @@ public struct GeoDesic: Sendable {
     
     /// Initializes a new `GeoDesic` instance with the specified semi-major axis and flattening.
     /// - Parameters:
-    ///   - semiMajorAxis: The semi-major axis of the ellipsoid in meters.
+    ///   - semiMajorAxis: The semi-major axis of the ellipsoid in meters. I.e., the equatorial radius.
     ///   - flattening: The flattening of the ellipsoid (f = (a - b) / a).
     init(a semiMajorAxis: Double, f flattening: Double) {
         self.semiMajorAxis = semiMajorAxis
