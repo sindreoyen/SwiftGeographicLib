@@ -5,7 +5,7 @@ Ready-to-use Swift wrapper for geodesic methods from the renowned library Geogra
 You can install the library using Swift Package Manager. Add the following line to your `Package.swift` dependencies array:
 
 ```swift
-.package(url: "https://github.com/sindreoyen/SwiftGeographicLib.git", branch: "main")
+.package(url: "https://github.com/sindreoyen/SwiftGeographicLib.git", .upToNextMinor(from: "1.0.1"))
 ```
 
 # 2 SwiftGeographicLib Usage Guide
