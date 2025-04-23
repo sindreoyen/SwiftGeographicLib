@@ -13,4 +13,4 @@ The library currently supports the following methods:
 - `Direct`: Calculate the destination point given a starting coordinate, azimuth, and distance. Supports the use of custom ellipsoids via the `GeoDesic` struct and defaults to WGS84.
  
 ## Contributing
-If you would like to contribute to this project to add support for more method, please fork the repository and submit a pull request. You can also submit an issue and I will look into it. All contributions are welcome!
+If you'd like to contribute to this project by adding support for more methods, please fork the repository and submit a pull request. You can also submit an issue, and I will look into it. All contributions are welcome! Note: All implemented methods should be placed in relevant folder locations and tested with the newest testing framework, `Swift Testing`.
