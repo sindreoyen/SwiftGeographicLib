@@ -46,4 +46,8 @@ public struct GeodesicFlags: OptionSet, Sendable {
     /// [–180°, +180°].  With it, a path that crosses the antimeridian
     /// multiple times will show longitudes like 190°, 370°, etc.
     public static let longUnroll = GeodesicFlags(rawValue: 1 << 15)
+    
+    /// A convenience property to get all flags combined.
+    /// This includes both `arcMode` and `longUnroll`.
+    public static let all: GeodesicFlags = [.arcMode, .longUnroll]
 }
