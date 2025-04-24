@@ -13,9 +13,13 @@ import CoreLocation
 /// You can add vertices or edges incrementally, compute the accumulated perimeter
 /// and area, and even test a tentative final point or edge without modifying the state.
 public class GeodesicPolygon {
+    // MARK: - Attributes
+    
     /// The underlying C struct for polygon state.
     var poly = geod_polygon()
 
+    // MARK: - Init
+    
     /// Creates a new polygon (or polyline) accumulator.
     ///
     /// - Parameter polyline: Pass `true` for a polyline (only perimeter), `false` for a closed polygon (area + perimeter).
@@ -23,11 +27,15 @@ public class GeodesicPolygon {
         geod_polygon_init(&poly, polyline ? 1 : 0)
     }
 
+    // MARK: - Methods
+    
+    // MARK: Clear
     /// Clears all accumulated vertices and resets the polygon/polyline.
     public func clear() {
         geod_polygon_clear(&poly)
     }
 
+    // MARK: Add points and edges
     /// Adds a vertex to the polygon or polyline by geographic coordinate.
     ///
     /// - Parameters:
@@ -58,6 +66,7 @@ public class GeodesicPolygon {
         geod_polygon_addedge(&g, &poly, azi, s)
     }
 
+    // MARK: Compute area and perimeter
     /// Computes the accumulated perimeter (and area if polygon) so far.
     ///
     /// - Parameters:
@@ -79,6 +88,7 @@ public class GeodesicPolygon {
         return (n, A, P)
     }
 
+    // MARK: Test point and edge
     /// Tests the effect of adding a final point without modifying the state.
     ///
     /// - Parameters:
@@ -121,6 +131,7 @@ public class GeodesicPolygon {
         return (n, A, P)
     }
 
+    // MARK: Static area and perimeter
     /// Computes the area and perimeter of a closed polygon in one call.
     ///
     /// - Parameters:

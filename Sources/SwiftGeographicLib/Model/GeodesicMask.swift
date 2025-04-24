@@ -37,6 +37,8 @@ public struct GeodesicMask: OptionSet, Sendable {
     /// any `geod_position` or `geod_genposition` call.
     public static let longitude = GeodesicMask(rawValue: (1 << 8) | (1 << 3))
     
+    // MARK: - OptionSet
+    
     /// Compute the **forward azimuth** (azi₂) at the endpoint.
     ///
     /// This is always implied even if you omit it explicitly.

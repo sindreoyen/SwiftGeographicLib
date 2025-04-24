@@ -11,11 +11,12 @@
 public struct GeodGeodesic: Sendable {
     // MARK: - Attributes
     
-    // MARK: Known ellipsoids
+    /// WGS84 is the most widely used geodetic reference system. This is the default.
     public static let WGS84 = GeodGeodesic(a: 6_378_137.0, f: 1.0 / 298.257223563)
     
-    // MARK: Struct attributes
+    /// The semi-major axis of the ellipsoid in meters. I.e., the equatorial radius.
     let semiMajorAxis: Double
+    /// The flattening of the ellipsoid (f = (a - b) / a).
     let flattening: Double
     
     // MARK: - Init

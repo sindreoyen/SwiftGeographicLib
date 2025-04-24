@@ -10,8 +10,11 @@ import CoreLocation
 
 /// Swift wrappers for the C geodesic routines from GeographicLib.
 /// Provides methods to solve direct and inverse geodesic problems using a specified geodesic model (e.g., WGS84).
+/// `Geodesic` is implemented as a static enum to provide a clean interface and avoid instantiation.
 public enum Geodesic {
+    // MARK: - Methods
     
+    // MARK: Direct
     /// Solves the direct geodesic problem.
     ///
     /// Calculates the destination point given a starting point, distance, and azimuth.
@@ -42,6 +45,7 @@ public enum Geodesic {
         return CLLocationCoordinate2D(latitude: lat2, longitude: lon2)
     }
     
+    // MARK: General Direct
     /// Solves the general direct geodesic problem with extended output.
     ///
     /// Allows for calculating additional geodesic quantities along with the destination point.
@@ -92,6 +96,7 @@ public enum Geodesic {
         return (lat2, lon2, azi2, s12, m12, M12, M21, S12, a12)
     }
     
+    // MARK: Inverse
     /// Solves the inverse geodesic problem.
     ///
     /// Calculates the shortest distance and azimuths between two geographic points.
@@ -120,6 +125,7 @@ public enum Geodesic {
         return (s12, azi1, azi2)
     }
     
+    // MARK: General Inverse
     /// Solves the general inverse geodesic problem with extended output.
     ///
     /// Includes computation of distance, azimuths, geodesic scales, and area between two points.

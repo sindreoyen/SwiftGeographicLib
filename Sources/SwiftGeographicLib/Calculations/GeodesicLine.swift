@@ -14,9 +14,13 @@ import CoreLocation
 /// either by initializing a line and stepping along it, or by constructing
 /// it to a fixed endpoint and querying positions along the arc or distance.
 public class GeodesicLine {
+    // MARK: - Attributes
+    
     /// The underlying C struct for geodesic line state.
     var line = geod_geodesicline()
 
+    // MARK: - Init
+    
     /// Initializes a geodesic line from a start point and azimuth.
     ///
     /// Use this when you want fine-grained control over stepping along the line.
@@ -60,6 +64,9 @@ public class GeodesicLine {
         geod_directline(&line, &g, coordinate.lat, coordinate.lon, azi1, s12, caps.rawValue)
     }
 
+    // MARK: - Methods
+    
+    // MARK: Position
     /// Computes the position at a given distance along the line.
     ///
     /// - Parameter distance: The distance from the start point (meters).
@@ -69,7 +76,8 @@ public class GeodesicLine {
         geod_position(&line, s12, &lat2, &lon2, &azi2)
         return CLLocationCoordinate2D(latitude: lat2, longitude: lon2)
     }
-
+    
+    // MARK: General Position
     /// Computes the general position along the line, returning all requested geodesic quantities.
     ///
     /// - Parameters:
@@ -114,6 +122,7 @@ public class GeodesicLine {
         return (lat2, lon2, azi2, s12, m12, M12, M21, S12, a12)
     }
 
+    // MARK: Set Distance
     /// Sets the internal "third point" distance for future calls to `position`.
     ///
     /// - Parameter s13: Distance from the start point to the internal reference point (meters).
@@ -121,10 +130,11 @@ public class GeodesicLine {
         geod_setdistance(&line, s13)
     }
 
+    // MARK: Set Distance with Flags
     /// Sets the internal "third point" by distance or arc length.
     ///
     /// - Parameters:
-    ///   - flags: Either `GEOD_NOFLAGS` or `GEOD_ARCMODE` to select distance vs. arc mode.
+    ///   - flags: Either `.none` or `.arcMode` to select distance vs. arc mode.
     ///   - s13_a13: Distance (meters) or arc length (degrees) for the reference point.
     public func genSetDistance(flags: GeodesicFlags, s13_a13: Double) {
         geod_gensetdistance(&line, flags.rawValue, s13_a13)
