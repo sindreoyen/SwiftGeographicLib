@@ -1,9 +1,9 @@
-# 1 SwiftGeographicLib
+# SwiftGeographicLib
 
-Ready-to-use Swift wrapper for the geodesic routines from the renowned [GeographicLib](https://geographiclib.sourceforge.io/).  
-Under the hood it calls the C library, but exposes a Swifty, type-safe API.
+The original `SwiftGeographicLib` repository. `SwiftGeographicLib` is a ready-to-use Swift wrapper for the geodesic routines from the renowned [GeographicLib](https://geographiclib.sourceforge.io/).  
+Under the hood, it calls the C library, but exposes a Swifty, type-safe API.
 
-## 1.1 Installation
+## Installation
 
 Use the Swift Package Manager. In your `Package.swift`:
 
@@ -16,58 +16,21 @@ dependencies: [
 ]
 ```
 
-## 1.2 Masks & Flags
-
-SwiftGeographicLib provides two `OptionSet` types to mirror the C bitmasks:
-
-```swift
-/// geod_mask values
-public struct GeodesicMask: OptionSet {
-  public let rawValue: UInt32
-  public init(rawValue: UInt32) { self.rawValue = rawValue }
-
-  public static let none          = GeodesicMask([])
-  public static let latitude      = GeodesicMask(rawValue: 1<<7)
-  public static let longitude     = GeodesicMask(rawValue: (1<<8)|(1<<3))
-  public static let azimuth       = GeodesicMask(rawValue: 1<<9)
-  public static let distance      = GeodesicMask(rawValue: (1<<10)|(1<<0))
-  public static let distanceIn    = GeodesicMask(rawValue: (1<<11)|(1<<0)|(1<<1))
-  public static let reducedLength = GeodesicMask(rawValue: (1<<12)|(1<<0)|(1<<2))
-  public static let scale         = GeodesicMask(rawValue: (1<<13)|(1<<0)|(1<<2))
-  public static let area          = GeodesicMask(rawValue: (1<<14)|(1<<4))
-  public static let all: GeodesicMask = [
-    .latitude, .longitude, .azimuth,
-    .distance, .distanceIn, .reducedLength,
-    .scale, .area
-  ]
-}
-
-/// geod_flags values
-public struct GeodesicFlags: OptionSet {
-  public let rawValue: UInt32
-  public init(rawValue: UInt32) { self.rawValue = rawValue }
-
-  public static let none       = GeodesicFlags([])
-  public static let arcMode    = GeodesicFlags(rawValue: 1<<0)
-  public static let unrollLong = GeodesicFlags(rawValue: 1<<15)
-}
-```
-
-Place those in `Sources/SwiftGeographicLib/Masks.swift` (or similar).
-
 ---
 
-# 2 SwiftGeographicLib Usage Guide
+# SwiftGeographicLib Usage Guide
 
 This library gives you three main APIs to solve geodesic problems on an ellipsoid:
 
 1. **`Geodesic`** – static direct/inverse calls  
 2. **`GeodesicLine`** – incremental “walk a geodesic” API  
-3. **`GeodesicPolygon`** – accumulate points/edges to get perimeter & area  
+3. **`GeodesicPolygon`** – accumulate points/edges to get perimeter & area
+
+> **Tip:** All APIs default to the _World Geodetic System_ ellipsoid, WGS-84, unless you supply another `GeodGeodesic` model.
 
 ---
 
-## 2.1 Geodesic
+## Geodesic
 
 ### `direct(from:distance:azimuth:geodesic:)`
 
@@ -111,7 +74,7 @@ let (a12, s12, azi1, azi2, m12, M12, M21, S12) =
 
 ---
 
-## 2.2 GeodesicLine
+## GeodesicLine
 
 Use this when you want to step along a geodesic:
 
@@ -157,7 +120,7 @@ line.genSetDistance(flags: .arcMode, s13_a13: 4.5)
 
 ---
 
-## 2.3 GeodesicPolygon
+## GeodesicPolygon
 
 Accumulate vertices or edges to get perimeter & area:
 
@@ -168,16 +131,6 @@ poly.addEdge(azimuth: 90, distance: 111_000)
 let (count, area, perimeter) = poly.compute(reverse: false, signed: true)
 ```
 
-### “Test” methods
-
-```swift
-let (_, testArea, testPerim) =
-  poly.testPoint((lat: 1.5, lon: 0.5))
-let (_, testArea2, testPerim2) =
-  poly.testEdge(azimuth: 180, distance: 50_000)
-// none of these mutate `poly`—a fresh compute() still returns the original.
-```
-
 ### Quick one-liner
 
 ```swift
@@ -185,11 +138,48 @@ let coords = [(lat:0, lon:0), (lat:0, lon:1), (lat:1, lon:1), (lat:1, lon:0)]
 let (area, peri) = GeodesicPolygon.area(of: coords)
 ```
 
-> **Tip:** All APIs default to WGS-84 unless you supply another `GeodGeodesic` model.
+--- 
+
+## Masks & Flags
+
+SwiftGeographicLib provides two `OptionSet` types to mirror the C bitmasks:
+
+```swift
+/// geod_mask values
+public struct GeodesicMask: OptionSet {
+  public let rawValue: UInt32
+  public init(rawValue: UInt32) { self.rawValue = rawValue }
+
+  public static let none          = GeodesicMask([])
+  public static let latitude      = GeodesicMask(rawValue: 1<<7)
+  public static let longitude     = GeodesicMask(rawValue: (1<<8)|(1<<3))
+  public static let azimuth       = GeodesicMask(rawValue: 1<<9)
+  public static let distance      = GeodesicMask(rawValue: (1<<10)|(1<<0))
+  public static let distanceIn    = GeodesicMask(rawValue: (1<<11)|(1<<0)|(1<<1))
+  public static let reducedLength = GeodesicMask(rawValue: (1<<12)|(1<<0)|(1<<2))
+  public static let scale         = GeodesicMask(rawValue: (1<<13)|(1<<0)|(1<<2))
+  public static let area          = GeodesicMask(rawValue: (1<<14)|(1<<4))
+  public static let all: GeodesicMask = [
+    .latitude, .longitude, .azimuth,
+    .distance, .distanceIn, .reducedLength,
+    .scale, .area
+  ]
+}
+
+/// geod_flags values
+public struct GeodesicFlags: OptionSet {
+  public let rawValue: UInt32
+  public init(rawValue: UInt32) { self.rawValue = rawValue }
+
+  public static let none       = GeodesicFlags([])
+  public static let arcMode    = GeodesicFlags(rawValue: 1<<0)
+  public static let unrollLong = GeodesicFlags(rawValue: 1<<15)
+}
+```
 
 ---
 
-# 3 Contributing
+# Contributing
 
 Feel free to open issues, suggest features, or submit pull requests.  
 All methods live in `Sources/SwiftGeographicLib` and tests in `Tests/SwiftGeographicLibTests`.  
