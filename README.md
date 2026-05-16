@@ -31,8 +31,6 @@ import SwiftGeographicLib
 import CoreLocation
 ```
 
-Requires Swift 6.0+.
-
 ---
 
 ## Quick start (Simple API)
