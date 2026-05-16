@@ -19,7 +19,7 @@ Swift Package Manager. In `Package.swift`:
 dependencies: [
   .package(
     url: "https://github.com/sindreoyen/SwiftGeographicLib.git",
-    .upToNextMinor(from: "1.0.1")
+    .upToNextMinor(from: "1.0.4")
   )
 ]
 ```
